@@ -1,0 +1,20 @@
+{
+  "name": "globetrotting",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server -a 127.0.0.1 --cors"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/diversify/globetrotting.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/diversify/globetrotting/issues"
+  },
+  "homepage": "https://github.com/diversify/globetrotting"
+}
