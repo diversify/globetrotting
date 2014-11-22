@@ -122,6 +122,16 @@ var GtMap = React.createClass({
 	skipTrack: function() {
 		this.playTrack(this.state.currentMarker, this.state.currentTrackIndex + 1);
 	},
+	playpauseTrack:function(){
+		var fieldNameElement = document.getElementById('playpauseBtn');
+		if(this.state.currentTrack.isPaused()){
+			this.state.currentTrack.play();
+			fieldNameElement.innerHTML = "PLAY";
+		}else{
+			this.state.currentTrack.pause();
+			fieldNameElement.innerHTML = "PAUSE";
+		}
+	},
 	animateIn: function() {
 		$(this.refs.ovlWrap.getDOMNode()).find('div').velocity('transition.slideUpIn', {
 			duration: 500,
@@ -288,6 +298,9 @@ var GtMap = React.createClass({
 					</div>
 				<div onClick={this.skipTrack}>
 					SKIP IT
+				</div>
+				<div id="playpauseBtn" onClick={this.playpauseTrack}>
+					PLAY
 				</div>
 				</div>
 				<div id="progress-wrap" onClick={this.setProgress}>
