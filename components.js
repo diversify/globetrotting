@@ -63,7 +63,7 @@ var GtMap = React.createClass({
 		});
 
 		google.maps.event.addListener(marker, 'click', function() {
-			this.playTrack(marker, 0); // Start with first in playlist
+			this.playTrack(marker, Math.round(Math.random() * 10)); // Start with first in playlist
 		}.bind(this));
 	},
 	playTrack: function(marker, trackIndex) {
@@ -79,11 +79,11 @@ var GtMap = React.createClass({
 			if (this.state.currentTrack) this.state.currentTrack.stop();
 
 			this.drawPolyLine(marker);
-
+			console.log(trackInfo);
 			this.setState({
 				cityName: marker.cityName,
 				countryName: marker.countryName,
-				trackName: trackInfo.name + ' — ' + trackInfo.album.name,
+				trackName: trackInfo.name + ' by ' + trackInfo.artists[0].name,
 				previewUrl: trackInfo.preview_url,
 				progressPercent: 0,
 				currentMarker: marker,
@@ -96,6 +96,9 @@ var GtMap = React.createClass({
 				this.setState({
 					progressPercent: buzz.toPercent(this.state.currentTrack.getTime(), this.state.currentTrack.getDuration(), 2)
 				});
+			}.bind(this))
+			.bind('ended', function() {
+				this.skipTrack();
 			}.bind(this));
 		}.bind(this));
 	},
