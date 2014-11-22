@@ -12,11 +12,23 @@ body {
 	width: 1800px;
 	height: 900px;
 }
+#map-actions {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 100px;
+	background-image: -webkit-linear-gradient(top, transparent, rgba(0,0,0,0.3));
+	background-image: linear-gradient(top, transparent, rgba(0,0,0,0.3));
+}
 #ovl-wrap {
 	position: absolute;
 	bottom: 40px;
 	left: 40px;
 	z-index: 100;
+}
+#ovl-wrap>div {
+	opacity: 0;
 }
 #ovl-trackname {
 	color: #fff;
@@ -43,8 +55,10 @@ body {
 	left: 0;
 	right: 0;
 	z-index: 100;
+	height: 30px;
 }
 #progress-bar {
+	margin-top: 26px;
 	width: 0;
 	height: 4px;
 	background: #81b900;
