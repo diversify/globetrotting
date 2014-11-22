@@ -1,90 +1,20 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<style type="text/css">
-		html, body, #map-canvas { width: 1024px; height: 500px; margin: 0; padding: 0;}
-		</style>
-		<script type="text/javascript" src="buzz.js"></script>
+		<link href="normalize.css" rel="stylesheet" type="text/css" />
+		<link href="style.css" rel="stylesheet" type="text/css" />
+		<link href="http://fonts.googleapis.com/css?family=Playfair+Display|Open+Sans:400,800" rel="stylesheet" type="text/css" />
 		<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="buzz.js"></script>
+		<script type="text/javascript" src="velocity.js"></script>
 		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCAxddGio_WTvE81GYTPw4QKW-B2JwUip0"></script>
-		<script type="text/javascript">
-		function initialize() {
-			var mapStyle = [{
-				"featureType": "administrative",
-				elementType: 'geometry.fill',
-				"stylers": [
-					{
-						visibility: 'off'
-					},
-					{
-						saturation: -100
-					},{
-						gamma: 0.5
-					}]
-				}];
-
-			var mapOptions = {
-				center: new google.maps.LatLng(20, 0),
-				zoom: 2,
-				scrollwheel: false,
-				navigationControl: false,
-				mapTypeControl: false,
-				scaleControl: false,
-				draggable: false,
-				panControl: false,
-				zoomControl: false,
-				streetViewControl: false,
-				overviewMapControl: false,
-				disableDoubleClickZoom: true,
-				mapTypeId: google.maps.MapTypeId.ROADMAP,
-				styles: mapStyle
-			};
-			var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-
-			google.maps.event.addListener(map, 'click', function(e) {
-				console.log(e);
-				return false;
-			});
-
-			//http://maps.googleapis.com/maps/api/geocode/json?address=Stockholm&sensor=false
-
-			for (var i = 0; i < 100; i++) {
-				var marker = new google.maps.Marker({
-					position: {
-						lat: 59.224443,
-						lng: 17.7768621
-					},
-					map: map
-				});
-				google.maps.event.addListener(marker, 'click', function() {
-					$.ajax({
-						url: 'https://api.spotify.com/v1/tracks/?ids=0eGsygTp906u18L0Oimnem',
-						type: 'get',
-						success: function(res) {
-							var tracks = res.tracks;
-							for (var i = 0; i < tracks.length; i++) {
-								console.log(tracks[i].preview_url);
-								var track = new buzz.sound(tracks[i].preview_url, {
-									formats: ['mp3']
-								});
-								track.fadeIn().play();
-							}
-						}
-					});
-				});
-			}
-		}
-		var cities;
-		$.ajax({
-			url: '/data.json',
-			success: function(cities) {
-				cities = cities.cities;
-				initialize();
-			}
-		});
-		</script>
+		<script src="http://fb.me/react-with-addons-0.12.1.js"></script>
+		<script src="http://fb.me/JSXTransformer-0.12.1.js"></script>
+		<script type="text/jsx" src="components.js"></script>
 	</head>
 	<body>
 		<div id="map-canvas"></div>
+		<div id="map-actions">
+		</div>
 	</body>
 </html>

@@ -1,0 +1,52 @@
+body {
+	overflow: hidden;
+}
+.opensans {
+	font-family: 'Open Sans', sans-serif;
+}
+.playfair {
+	font-family: 'Playfair Display', serif;
+}
+#map-canvas {
+	margin: 0 auto;
+	width: 1800px;
+	height: 900px;
+}
+#ovl-wrap {
+	position: absolute;
+	bottom: 40px;
+	left: 40px;
+	z-index: 100;
+}
+#ovl-trackname {
+	color: #fff;
+	font-size: 32px;
+}
+#ovl-skip {
+	padding: 2px 5px;
+	color: #333;
+	font-size: 11px;
+	background: rgba(255,255,255,0.7);
+	border-radius: 4px;
+}
+#ovl-cityname {
+	color: #fff;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+#progress-wrap {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 100;
+}
+#progress-bar {
+	width: 0;
+	height: 4px;
+	background: #81b900;
+	transition: 0.5s ease all;
+}
