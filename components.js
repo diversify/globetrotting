@@ -54,13 +54,20 @@ var GtMap = React.createClass({
 		];
 	},
 	createMarker: function(markerInfo) {
+		var pinIcon = new google.maps.MarkerImage(
+    	"images/pin.png",
+    	null, /* size is determined at runtime */
+    	null, /* origin is 0,0 */
+    	null, /* anchor is bottom center of the scaled image */
+    	new google.maps.Size(20, 25)
+		);  
 		var marker = new google.maps.Marker({
 			position: {
 				lat: markerInfo.lat,
 				lng: markerInfo.lng,
 			},
 			map: map,
-			icon: 'images/pin.gif',
+			icon: pinIcon,
 			origin: new google.maps.Point(0, 20),
 			size: new google.maps.Size(20, 20),
 			cityName: markerInfo.cityName,
@@ -361,11 +368,11 @@ var GtMap = React.createClass({
 							{this.state.trackName}
 						</div>
 					</div>
-				<div onClick={this.skipTrack}>
-					Skip song
-				</div>
 				<div id="play-pause-btn" onClick={this.playPauseTrack}>
-					Play
+					<img src="images/play.png" /><img src="images/pause.png" /><img src="images/skip.png" />
+				</div>
+				<div onClick={this.skipTrack}>
+					SKIP
 				</div>
 				</div>
 				<div id="progress-wrap" onClick={this.setProgress}>
