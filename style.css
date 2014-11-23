@@ -110,10 +110,13 @@ body {
 }
 
 .section-idea p {
+	margin: 0 auto;
+	width: 700px;
 	color: #fff;
 	font-family: 'Open Sans';
 	font-weight: 300;
 	font-size: 20px;
+	line-height: 2em;
 }
 
 .green {
