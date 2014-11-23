@@ -2,6 +2,7 @@
 
 var map;
 var overlay;
+var places;
 var loadingTrack = false;
 var cx = React.addons.classSet;
 var GtMap = React.createClass({
@@ -41,15 +42,18 @@ var GtMap = React.createClass({
 				}
 				var markerCluster = new MarkerClusterer(map, tempMarkers, {
 					styles: [{
-						url: 'images/pin.gif',
-						width: 30,
-						height: 30,
-						anchor: [0, 50],
+						url: 'images/pin3.png',
+						width: 20,
+						height: 25,
+						anchor: [10, 25],
 						textColor: '#fff',
 						textSize: 8
 					}],
 					gridSize: 30,
-					maxZoom: 10
+					maxZoom: 20
+				});
+				google.maps.event.addListener(markerCluster, 'click', function (c) {
+					console.log(c);
 				});
 			}.bind(this)
 		});
@@ -71,15 +75,20 @@ var GtMap = React.createClass({
 		];
 	},
 	createMarker: function(markerInfo) {
+		var markerImage = {
+			url: 'images/pin.png',
+			anchorPoint: new google.maps.Point(10, 30),
+			size: new google.maps.Size(20, 25),
+			scaledSize: new google.maps.Size(20, 25)
+		}
 		var marker = new google.maps.Marker({
 			position: {
 				lat: markerInfo.lat,
 				lng: markerInfo.lng,
 			},
 			//map: map,
-			icon: 'images/pin.gif',
-			origin: new google.maps.Point(0, 20),
-			size: new google.maps.Size(20, 20),
+			title: markerInfo.cityName + ', ' + markerInfo.countryName,
+			icon: markerImage,
 			cityName: markerInfo.cityName,
 			countryName: markerInfo.countryName,
 			spotifyTrackIds: markerInfo.spotifyTrackIds
@@ -121,7 +130,7 @@ var GtMap = React.createClass({
 			begin: function() {
 				setTimeout(function() {
 					$pulse.hide();
-				}, 2000);
+				}, 1000);
 			}
 		});
 	},
@@ -185,7 +194,24 @@ var GtMap = React.createClass({
 			.bind('ended', function() {
 				this.skipTrack();
 			}.bind(this));
+			this.getPlacesInfo(marker);
 		}.bind(this));
+	},
+	getPlacesInfo: function(marker) {
+		console.log(places);
+		places.textSearch({
+			query: marker.cityName + ', ' + marker.countryName,
+			radius: 500,
+			location: new google.maps.LatLng(marker.position.k, marker.position.B)
+		}, function(res) {
+			if (!res) return false;
+			console.log(res);
+			places.getDetails({ 
+				placeId: res[0].place_id
+			}, function(placeInfo) {
+				console.log(placeInfo);
+			});
+		});
 	},
 	playPauseTrack: function() {
 		if (this.state.currentTrack.isPaused()) {
@@ -213,13 +239,6 @@ var GtMap = React.createClass({
 		this.setState({
 			lastQueueMarker: newMarker 
 		});
-
-		/*else if (this.state.currentMarker && this.state.currentMarker.cityName !== newMarker.cityName) {
-			linePathLatLng = [
-				new google.maps.LatLng(this.state.currentMarker.position.k, this.state.currentMarker.position.B),
-				new google.maps.LatLng(newMarker.position.k, newMarker.position.B)
-			];
-		}*/
 
 		if (!linePathLatLng.length) {
 			return false;
@@ -382,7 +401,7 @@ var GtMap = React.createClass({
 		var mapOptions = {
 			center: new google.maps.LatLng(20, 0),
 			zoom: 3,
-			maxZoom: 10,
+			maxZoom: 20,
 			minZoom: 3,
 			scrollwheel: false,
 			//navigationControl: false,
@@ -404,6 +423,7 @@ var GtMap = React.createClass({
 		}
 
 		map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+		places = new google.maps.places.PlacesService(map);
 
 		overlay = new google.maps.OverlayView();
 		overlay.draw = function() {};

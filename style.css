@@ -75,6 +75,7 @@ body {
 	border-radius: 4px;
 }
 #ovl-cityname {
+	padding-top: 4px;
 	color: #fff;
 	font-size: 11px;
 	font-weight: 700;
@@ -148,7 +149,7 @@ body {
 	border-radius: 500px;
 }
 #track-controls {
-	padding-top: 6px;
+	padding-top: 10px;
 }
 #play-pause-btn {
 	cursor: pointer;
@@ -159,14 +160,14 @@ body {
 	background-size: cover;
 	background-position: center center;
 }
-#play-pause-btn:hover, #skip-btn:hover {
-	opacity: 0.8;
-}
 #play-pause-btn.play {
 	background-image: url(images/play.png);
 }
 #play-pause-btn.pause {
 	background-image: url(images/pause.png);
+}
+#play-pause-btn:hover, #skip-btn:hover {
+	opacity: 0.1;
 }
 #skip-btn {
 	cursor: pointer;
@@ -194,4 +195,38 @@ body {
 #toggle-queue.active {
 	color: #000;
 	background: #fff;
+}
+.section-idea {
+	margin: 0 auto;
+	padding: 80px 0 140px 0;
+}
+.section-idea h1 {
+	font-family: 'Open Sans';
+	font-weight: 300;
+	text-align: center;
+	padding-bottom: 60px;
+	color: #fff;
+}
+.section-idea p {
+	margin: 0 auto;
+	width: 700px;
+	color: #fff;
+	font-family: 'Open Sans';
+	font-weight: 300;
+	font-size: 20px;
+	line-height: 2em;
+}
+.green {
+	background-color: #81b900;
+}
+.section h1 {
+	font-family: 'Open Sans';
+	font-weight: 300;
+	text-align: center;
+	padding-bottom: 60px;
+}
+
+.section-idea a {
+	text-decoration: none;
+	color: #fff;
 }
