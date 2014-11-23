@@ -1,6 +1,16 @@
 body {
 	overflow-x: hidden;
 }
+.cf:before, .cf:after {
+	content: " ";
+	display: table;
+}
+.cf:after {
+	clear: both;
+}
+.cf {
+	*zoom: 1;
+}
 .opensans {
 	font-family: 'Open Sans', sans-serif;
 }
@@ -136,4 +146,52 @@ body {
 	height: 60px;
 	border: 2px solid rgba(255,255,255,0.3);
 	border-radius: 500px;
+}
+#track-controls {
+	padding-top: 6px;
+}
+#play-pause-btn {
+	cursor: pointer;
+	margin-right: 10px;
+	float: left;
+	width: 32px;
+	height: 32px;
+	background-size: cover;
+	background-position: center center;
+}
+#play-pause-btn:hover, #skip-btn:hover {
+	opacity: 0.8;
+}
+#play-pause-btn.play {
+	background-image: url(images/play.png);
+}
+#play-pause-btn.pause {
+	background-image: url(images/pause.png);
+}
+#skip-btn {
+	cursor: pointer;
+	float: left;
+	width: 32px;
+	height: 32px;
+	background-size: cover;
+	background-image: url(images/skip.png);
+	background-position: center center;
+}
+#toggle-queue {
+	cursor: pointer;
+	float: left;
+	margin-left: 10px;
+	padding: 0 10px;
+	color: #fff;
+	font-size: 11px;
+	font-weight: 700;
+	line-height: 28px;
+	border: 2px solid #fff;
+	border-radius: 40px;
+	text-transform: uppercase;
+	transition: 0.3s ease all;
+}
+#toggle-queue.active {
+	color: #000;
+	background: #fff;
 }

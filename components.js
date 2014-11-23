@@ -3,7 +3,7 @@
 var map;
 var overlay;
 var loadingTrack = false;
-
+var cx = React.addons.classSet;
 var GtMap = React.createClass({
 	getInitialState: function() {
 		return {
@@ -172,7 +172,8 @@ var GtMap = React.createClass({
 				progressPercent: 0,
 				currentMarker: marker,
 				currentTrack: new buzz.sound(trackInfo.preview_url, { formats: ['mp3'] }),
-				currentTrackIndex: trackIndex
+				currentTrackIndex: trackIndex,
+				playing: true
 			});
 
 			this.state.currentTrack.fadeIn().play();
@@ -423,14 +424,18 @@ var GtMap = React.createClass({
 							{this.state.trackName}
 						</div>
 					</div>
-				<div onClick={this.skipTrack}>
-					Skip song
-				</div>
-				<div id="play-pause-btn" onClick={this.playPauseTrack}>
-					{this.state.playing ? 'Pause' : 'Play'}
-				</div>
-				<div id="toggle-queue" onClick={this.toggleQueuing}>
-				toggle
+				<div id="track-controls" className="cf">
+					<div id="play-pause-btn" className={this.state.playing ? 'pause' : 'play'} onClick={this.playPauseTrack}>
+					</div>
+					<div id="skip-btn" onClick={this.skipTrack}></div>
+					<div id="toggle-queue" onClick={this.toggleQueuing} className={
+						cx({
+							opensans: true,
+							active: this.state.queuing 
+						})
+					}>
+						{this.state.queuing ? 'Turn off queuing' : 'Turn on queuing'}
+					</div>
 				</div>
 				</div>
 				<div id="progress-wrap" onClick={this.setProgress}>
