@@ -1,5 +1,5 @@
 body {
-	overflow: hidden;
+	overflow-x: hidden;
 }
 .opensans {
 	font-family: 'Open Sans', sans-serif;
@@ -7,10 +7,33 @@ body {
 .playfair {
 	font-family: 'Playfair Display', serif;
 }
+#top-wrapper {
+	position: absolute;
+	top: 40px;
+	left: 40px;
+	z-index: 5;
+}
+#top-header {
+	padding-bottom: 10px;
+	height: auto;
+	font-family: 'Dancing Script';
+	font-size: 50px;
+	color: #fff;
+	line-height: auto;
+}
+#sub-header {
+	padding-bottom: 25px;
+	font-size: 13px;
+	font-family: 'Open Sans';
+	font-weight: 300;
+	color: #fff;
+	line-height: auto;
+	text-transform: uppercase;
+	letter-spacing: 0.1em;
+}
 #map-canvas {
-	margin: 0 auto;
-	width: 1800px;
-	height: 900px;
+	height: 100vh;
+	width: 100%;
 }
 #map-actions {
 	position: absolute;
@@ -63,4 +86,54 @@ body {
 	height: 4px;
 	background: #81b900;
 	transition: 0.5s ease all;
+}
+#bottom-wrapper {
+	width: 1090px;
+	margin: 0 auto;
+	padding: 60px 0;
+}
+
+#bottom-wrapper h1 {
+	font-family: 'Open Sans';
+	font-weight: 300;
+	text-align: center;
+	padding-bottom: 60px;
+}
+.profile {
+	display: inline-block;
+	font-style: Open Sans;
+	font-weight: 400;
+	text-align: center;
+	font-size: 16px;
+	padding: 0 30px;
+}
+.profile-image {
+	width: 200px;
+	height: 200px;
+	border-radius: 900px;
+	background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+.profile-name {
+	font-family: 'Open sans';
+	font-weight: 800;
+}
+#pulse {
+	z-index: 500;
+	position: absolute;
+	opacity: 0;
+	width: 60px;
+	height: 60px;
+	background: rgba(255,255,255,0.3);
+	border-radius: 500px;
+}
+#ring {
+	z-index: 500;
+	position: absolute;
+	opacity: 0;
+	width: 60px;
+	height: 60px;
+	border: 2px solid rgba(255,255,255,0.3);
+	border-radius: 500px;
 }
