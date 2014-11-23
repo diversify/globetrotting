@@ -87,17 +87,44 @@ body {
 	background: #81b900;
 	transition: 0.5s ease all;
 }
-#bottom-wrapper {
+.section {
 	width: 1090px;
 	margin: 0 auto;
-	padding: 60px 0;
+	padding: 100px 0;
 }
 
-#bottom-wrapper h1 {
+.section-idea {
+	margin: 0 auto;
+	padding: 100px 0;
+}
+
+
+.section-idea h1 {
 	font-family: 'Open Sans';
 	font-weight: 300;
 	text-align: center;
 	padding-bottom: 60px;
+	color: #fff;
+}
+
+.section-idea p {
+	color: #fff;
+}
+
+.green {
+	background-color: #81b900;
+}
+
+.section h1 {
+	font-family: 'Open Sans';
+	font-weight: 300;
+	text-align: center;
+	padding-bottom: 60px;
+}
+
+.section a {
+	text-decoration: none;
+	color: #000000;
 }
 .profile {
 	display: inline-block;
@@ -119,6 +146,13 @@ body {
 	font-family: 'Open sans';
 	font-weight: 800;
 }
+
+#text-wrapper {
+	width: 800px;
+	margin: 0 auto;
+}
+
+
 #pulse {
 	z-index: 500;
 	position: absolute;

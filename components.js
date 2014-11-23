@@ -369,7 +369,7 @@ var GtMap = React.createClass({
 						</div>
 					</div>
 				<div id="play-pause-btn" onClick={this.playPauseTrack}>
-					<img src="images/play.png" /><img src="images/pause.png" /><img src="images/skip.png" />
+					<img src="images/play.png" /><img src="images/pause.png" /><img src="images/skip.png" /><img src="images/queue.png" />
 				</div>
 				<div onClick={this.skipTrack}>
 					SKIP
