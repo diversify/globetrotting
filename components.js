@@ -45,7 +45,7 @@ var GtMap = React.createClass({
 						url: 'images/pin3.png',
 						width: 20,
 						height: 25,
-						anchor: [10, 25],
+						anchor: [5, 0],
 						textColor: '#fff',
 						textSize: 8
 					}],
