@@ -3,16 +3,20 @@
 var map;
 var overlay;
 var loadingTrack = false;
-
+var cx = React.addons.classSet;
 var GtMap = React.createClass({
 	getInitialState: function() {
 		return {
 			visible: false,
+			queuing: false,
+			playing: false,
+			queue: [],
 			cityName: '',
 			countryName: '',
 			trackName: '',
 			previewUrl: '',
 			progressPercent: 0,
+			lastQueueMarker: null,
 			currentMarker: null,
 			currentTrack: null,
 			currentTrackIndex: 0
@@ -24,16 +28,29 @@ var GtMap = React.createClass({
 		$.ajax({
 			url: 'data.json',
 			success: function(trackData) {
+				var tempMarkers = [];
 				trackData = trackData.cities;
 				for (var i = 0; i < trackData.length; i++) {
-					this.createMarker({
+					tempMarkers.push(this.createMarker({
 						lat: trackData[i].latitude * 1,
 						lng: trackData[i].longitude * 1,
 						cityName: trackData[i].city,
 						countryName: trackData[i].country,
 						spotifyTrackIds: trackData[i].trackIDS
-					});
+					}));
 				}
+				var markerCluster = new MarkerClusterer(map, tempMarkers, {
+					styles: [{
+						url: 'images/pin.gif',
+						width: 30,
+						height: 30,
+						anchor: [0, 50],
+						textColor: '#fff',
+						textSize: 8
+					}],
+					gridSize: 30,
+					maxZoom: 10
+				});
 			}.bind(this)
 		});
 
@@ -59,7 +76,7 @@ var GtMap = React.createClass({
 				lat: markerInfo.lat,
 				lng: markerInfo.lng,
 			},
-			map: map,
+			//map: map,
 			icon: 'images/pin.gif',
 			origin: new google.maps.Point(0, 20),
 			size: new google.maps.Size(20, 20),
@@ -71,12 +88,23 @@ var GtMap = React.createClass({
 		google.maps.event.addListener(marker, 'click', function(e) {
 			if (!this.state.visible) {
 				this.showPulse(overlay.getProjection().fromLatLngToContainerPixel(e.latLng));
-			} else {
-				this.showRing(overlay.getProjection().fromLatLngToContainerPixel(e.latLng));
 			}
-
-			this.playTrack(marker, Math.round(Math.random() * 10)); // Start with first in playlist
+			if (this.state.queuing && this.state.currentTrack && !this.state.currentTrack.isEnded()) {
+				var tempQueue = this.state.queue;
+				tempQueue.push({
+					marker: marker,
+					trackPos: Math.round(Math.random() * 10)
+				});
+				this.drawPolyLine(marker);
+				this.setState({
+					queue: tempQueue
+				});
+			} else {
+				this.playTrack(marker, Math.round(Math.random() * 10)); // Start with first in playlist
+			}
 		}.bind(this));
+
+		return marker;
 	},
 	showPulse: function(projection) {
 		var $pulse = $('#pulse');
@@ -95,6 +123,12 @@ var GtMap = React.createClass({
 					$pulse.hide();
 				}, 2000);
 			}
+		});
+	},
+	toggleQueuing: function() {
+		this.setState({
+			queue: [],
+			queuing: !this.state.queuing
 		});
 	},
 	showRing: function(projection) {
@@ -128,9 +162,8 @@ var GtMap = React.createClass({
 			}
 
 			if (this.state.currentTrack) this.state.currentTrack.stop();
+			if (!this.state.queuing) this.drawPolyLine(marker);
 
-			this.drawPolyLine(marker);
-			console.log(trackInfo);
 			this.setState({
 				cityName: marker.cityName,
 				countryName: marker.countryName,
@@ -139,7 +172,8 @@ var GtMap = React.createClass({
 				progressPercent: 0,
 				currentMarker: marker,
 				currentTrack: new buzz.sound(trackInfo.preview_url, { formats: ['mp3'] }),
-				currentTrackIndex: trackIndex
+				currentTrackIndex: trackIndex,
+				playing: true
 			});
 
 			this.state.currentTrack.fadeIn().play();
@@ -154,36 +188,65 @@ var GtMap = React.createClass({
 		}.bind(this));
 	},
 	playPauseTrack: function() {
-		var fieldNameElement = document.getElementById('play-pause-btn');
-
 		if (this.state.currentTrack.isPaused()) {
 			this.state.currentTrack.play();
-			fieldNameElement.innerHTML = 'Play';
+			this.setState({
+				playing: true 
+			});
 		} else {
 			this.state.currentTrack.pause();
-			fieldNameElement.innerHTML = 'Pause';
-		}
-	},
-	drawPolyLine: function(newMarker) {
-		if (this.state.currentMarker && this.state.currentMarker.cityName !== newMarker.cityName) {
-
-			var linePathLatLng = [
-				new google.maps.LatLng(this.state.currentMarker.position.k, this.state.currentMarker.position.B),
-				new google.maps.LatLng(newMarker.position.k, newMarker.position.B)
-			];
-
-			new google.maps.Polyline({
-				path: linePathLatLng,
-				geodesic: true,
-				strokeColor: '#ffffff',
-				strokeOpacity: 1,
-				strokeWeight: 2,
-				map: map
+			this.setState({
+				playing: false 
 			});
 		}
 	},
+	drawPolyLine: function(newMarker) {
+		var linePathLatLng = [];
+
+		if (this.state.lastQueueMarker && this.state.lastQueueMarker.cityName !== newMarker.cityName) {
+			linePathLatLng = [
+				new google.maps.LatLng(this.state.lastQueueMarker.position.k, this.state.lastQueueMarker.position.B),
+				new google.maps.LatLng(newMarker.position.k, newMarker.position.B)
+			];
+		}
+
+		this.setState({
+			lastQueueMarker: newMarker 
+		});
+
+		/*else if (this.state.currentMarker && this.state.currentMarker.cityName !== newMarker.cityName) {
+			linePathLatLng = [
+				new google.maps.LatLng(this.state.currentMarker.position.k, this.state.currentMarker.position.B),
+				new google.maps.LatLng(newMarker.position.k, newMarker.position.B)
+			];
+		}*/
+
+		if (!linePathLatLng.length) {
+			return false;
+		}
+
+		new google.maps.Polyline({
+			path: linePathLatLng,
+			geodesic: true,
+			strokeColor: '#ffffff',
+			strokeOpacity: 0.6,
+			strokeWeight: 2,
+			map: map
+		});
+	},
 	skipTrack: function() {
-		this.playTrack(this.state.currentMarker, this.state.currentTrackIndex + 1);
+		if (this.state.queuing && this.state.queue.length > 0) {
+			this.playTrack(this.state.queue[0].marker, this.state.queue[0].trackPos);
+
+			var tempQueue = this.state.queue;
+			tempQueue.shift();
+
+			this.setState({
+				queue: tempQueue
+			});
+		} else {
+			this.playTrack(this.state.currentMarker, this.state.currentTrackIndex + 1);
+		}
 	},
 	animateIn: function() {
 		$(this.refs.ovlWrap.getDOMNode()).find('div').velocity('transition.slideUpIn', {
@@ -361,11 +424,18 @@ var GtMap = React.createClass({
 							{this.state.trackName}
 						</div>
 					</div>
-				<div onClick={this.skipTrack}>
-					Skip song
-				</div>
-				<div id="play-pause-btn" onClick={this.playPauseTrack}>
-					Play
+				<div id="track-controls" className="cf">
+					<div id="play-pause-btn" className={this.state.playing ? 'pause' : 'play'} onClick={this.playPauseTrack}>
+					</div>
+					<div id="skip-btn" onClick={this.skipTrack}></div>
+					<div id="toggle-queue" onClick={this.toggleQueuing} className={
+						cx({
+							opensans: true,
+							active: this.state.queuing 
+						})
+					}>
+						{this.state.queuing ? 'Turn off queuing' : 'Turn on queuing'}
+					</div>
 				</div>
 				</div>
 				<div id="progress-wrap" onClick={this.setProgress}>
