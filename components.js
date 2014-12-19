@@ -52,9 +52,6 @@ var GtMap = React.createClass({
 					gridSize: 30,
 					maxZoom: 20
 				});
-				google.maps.event.addListener(markerCluster, 'click', function (c) {
-					console.log(c);
-				});
 			}.bind(this)
 		});
 
@@ -194,7 +191,6 @@ var GtMap = React.createClass({
 			.bind('ended', function() {
 				this.skipTrack();
 			}.bind(this));
-			this.getPlacesInfo(marker);
 		}.bind(this));
 	},
 	getPlacesInfo: function(marker) {
@@ -231,9 +227,12 @@ var GtMap = React.createClass({
 
 		if (this.state.lastQueueMarker && this.state.lastQueueMarker.cityName !== newMarker.cityName) {
 			linePathLatLng = [
-				new google.maps.LatLng(this.state.lastQueueMarker.position.k, this.state.lastQueueMarker.position.B),
-				new google.maps.LatLng(newMarker.position.k, newMarker.position.B)
+				new google.maps.LatLng(this.state.lastQueueMarker.getPosition().lat(), this.state.lastQueueMarker.getPosition().lng()),
+				new google.maps.LatLng(newMarker.getPosition().lat(), newMarker.getPosition().lng())
 			];
+
+			console.log(this.state.lastQueueMarker.position);
+			console.log(newMarker.position);
 		}
 
 		this.setState({
