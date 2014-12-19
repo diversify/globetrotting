@@ -190,7 +190,6 @@ body {
 	border: 2px solid #fff;
 	border-radius: 40px;
 	text-transform: uppercase;
-	transition: 0.3s ease all;
 }
 #toggle-queue.active {
 	color: #000;
